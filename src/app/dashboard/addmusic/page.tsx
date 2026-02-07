@@ -1,4 +1,4 @@
-import AddAudioForm from '@/features/components/AddAudioForm'
+import AddAudioForm from '@/features/audios/components/AddAudioForm'
 import React from 'react'
 
 const page = () => {
@@ -9,4 +9,4 @@ const page = () => {
   )
 }
 
-export default page
+export default page;

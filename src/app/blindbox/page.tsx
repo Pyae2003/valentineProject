@@ -1,10 +1,10 @@
-import BlindBox from '@/features/components/BlindBox'
+import BlindBox from '@/features/main/components/BlindBox'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-        <BlindBox/>
+      <BlindBox />
     </div>
   )
 }

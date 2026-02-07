@@ -1,50 +1,38 @@
-import dotenv from "dotenv";
-import bcrypt from "bcrypt";
 import { prisma } from "@/lib";
-import { title } from 'process';
-dotenv.config();
+import { serverEnv } from "@/config/env-server";
+import { auth } from "@/lib/auth";
 const seed = async () => {
-  try {
-    const username = process.env.USERNAME;
+      try {
+        const { USERNAME: username, EMAIL: email, PASSWORD: password } = serverEnv;
+    
+        if (!username || !password || !email) {
+          throw new Error("Missing credentials in environment variables");
+        }
+    
+        const existingAdmin = await prisma.user.findUnique({ where: { email } });
+    
+        if (!existingAdmin) {
+          await auth.api.signUpEmail({
+            body: { email, password, username, name: "Admin" },
+          });
+          console.log(`✅ Admin created: ${username}`);
+        } else {
+          await auth.api.changePassword({
+            body: {
+              newPassword: password,
+              currentPassword: "", 
+              revokeOtherSessions: true,
+            },
+          });
+          console.log(`ℹ️ Admin already exists, Password updated for: ${username}`);
+        }
+      } catch (error) {
+        console.error("❌ Admin Seeding failed:", error);
+        process.exit(1);
+      }
+    };
 
-
-    const password = process.env.PASSWORD;
-
-    if (!username || !password) {
-      throw new Error("Usename and date not found");
-    }
-
-    const exitingAdmin = await prisma.ourInfo.findUnique({
-      where: {
-        username,
-      },
-    });
-
-    if (!exitingAdmin) {
-      const saltRound = await bcrypt.genSalt(10);
-
-      const hashPassword = await bcrypt.hash(password, saltRound);
-
-      const admin = await prisma.ourInfo.create({
-        data: {
-          username,
-          password: hashPassword,
-        },
-      });
-      console.log(`✅ Admin created: ${admin.username}`);
-    } else {
-      console.log(`ℹ️ Admin already created: ${exitingAdmin.username}`);
-    }
-  } catch (error) {
-    console.error("❌Admin Seeding failed:", error);
-    process.exit(1);
-  }
-};
-
-
-
-seed()
-
-.finally(async () => {
+    
+seed().finally(async () => {
   await prisma.$disconnect();
 });

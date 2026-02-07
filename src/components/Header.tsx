@@ -16,7 +16,15 @@ import {
 import { Button } from "./ui/button";
 import { Flower2Icon, Music2Icon, Music3Icon } from "lucide-react";
 import { Separator } from "./ui/separator";
-import { aboutUsPath, addmusic, contentsPath, reasonPath } from "@/constants/routes";
+import {
+  aboutUsPath,
+  addmusic,
+  addPath,
+  contentsPath,
+  reasonPath,
+  SaveCouplePhotoPath,
+  SaveMemoryPath,
+} from "@/constants/routes";
 import Link from "next/link";
 const Header = () => {
   return (
@@ -49,25 +57,48 @@ const Header = () => {
               <NavigationMenuItem>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button className="text-pink-500" variant={"link"}>News</Button>
+                    <Button className="text-pink-500" variant={"link"}>
+                      News
+                    </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-30 text-pink-500" align="start">
+                  <DropdownMenuContent
+                    className="w-30 text-pink-500"
+                    align="start"
+                  >
                     <DropdownMenuGroup>
                       <DropdownMenuItem>
-                        <Link href={addmusic}>
-                        Add Music
-                        </Link>
-                        <DropdownMenuShortcut><Music3Icon/> </DropdownMenuShortcut>
+                        <Link href={addmusic}>Add Music</Link>
+                        <DropdownMenuShortcut>
+                          <Music3Icon />{" "}
+                        </DropdownMenuShortcut>
                       </DropdownMenuItem>
-                      <Separator/>
+                      <Separator />
                       <DropdownMenuItem>
                         See Music
-                        <DropdownMenuShortcut><Music2Icon/></DropdownMenuShortcut>
+                        <DropdownMenuShortcut>
+                          <Music2Icon />
+                        </DropdownMenuShortcut>
                       </DropdownMenuItem>
-                      <Separator/>
+                      <Separator />
                       <DropdownMenuItem>
-                         Save Memory
-                        <DropdownMenuShortcut><Flower2Icon/></DropdownMenuShortcut>
+                        <Link href={SaveMemoryPath}>Save Memory</Link>
+                        <DropdownMenuShortcut>
+                          <Flower2Icon />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                      <Separator />
+                      <DropdownMenuItem>
+                        <Link href={addPath}>Save Photo</Link>
+                        <DropdownMenuShortcut>
+                          <Flower2Icon />
+                        </DropdownMenuShortcut>
+                      </DropdownMenuItem>
+                      <Separator />
+                      <DropdownMenuItem>
+                        <Link href={SaveCouplePhotoPath}>Save Our Couple Photo</Link>
+                        <DropdownMenuShortcut>
+                          <Flower2Icon />
+                        </DropdownMenuShortcut>
                       </DropdownMenuItem>
                     </DropdownMenuGroup>
                   </DropdownMenuContent>
