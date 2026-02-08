@@ -10,13 +10,13 @@ import Footer from "@/components/Footer";
 
 type dashboardProps = {
   title: string,
-  girlUrl : string,
-  boyUrl : string,
-  soloUrl : string,
-  coupleUrl : string
+  girlUrl: string,
+  boyUrl: string,
+  soloUrl: string,
+  coupleUrl: string
 };
 
-export default async function Dashboardd({ title , girlUrl , boyUrl, soloUrl,coupleUrl}: dashboardProps) {
+export default async function Dashboardd({ title, girlUrl, boyUrl, soloUrl, coupleUrl }: dashboardProps) {
   const songs = await allAudio({ title });
 
   return (
@@ -27,7 +27,7 @@ export default async function Dashboardd({ title , girlUrl , boyUrl, soloUrl,cou
 
       <GlowingHeartConnection
         leftName="Pyae Khant"
-        rightName="Pyae Khant"
+        rightName="Thwe Zin Min Thant"
         boyUrl={boyUrl}
         girlUrl={girlUrl}
       />
@@ -44,11 +44,11 @@ export default async function Dashboardd({ title , girlUrl , boyUrl, soloUrl,cou
             <CountDown />
           </div>
           <div>
-            <ImageAndVideo soloUrl={soloUrl} coupleUrl={coupleUrl}/>
+            <ImageAndVideo soloUrl={soloUrl} coupleUrl={coupleUrl} />
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
