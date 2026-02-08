@@ -1,36 +1,37 @@
 "use server"
 
 import { prisma } from "@/lib";
-import { AppError } from "../../../../middleware";
 import { supabaseServer } from "@/lib/supabase-server";
 import { revalidatePath } from "next/cache";
-import { ourPhotosPath } from "@/constants/routes";
+import { ourCouplePhotoPath, ourPhotosPath } from "@/constants/routes";
 import { redirect } from "next/navigation";
+import { AppError } from "../../../../../middleware";
 
-export const deletePhoto = async (id : string) => {
+export const deleteCouplePhoto = async (id : string) => {
     try {
 
         if(!id) {
             throw new AppError("ID NOT FOUND!",404);
         };
 
-        const singlePhoto = await prisma.soloImage.findUnique({
+
+        const check_id = await prisma.ourCoupleImage.findUnique({
             where: {
               id 
             },
           });
       
-        if (!singlePhoto) {
+        if (!check_id) {
             throw new AppError("Invalid Id", 400);
         };
 
-        const storageDelete = await supabaseServer.storage.from("OurCoupleImageAndVideo").remove([singlePhoto.imagePath]);
+        const storageDelete = await supabaseServer.storage.from("OurCoupleImageAndVideo").remove([check_id.imagePath]);
 
         if(!storageDelete.data){
             throw new AppError("Storage Deletion Error",400);
         }
 
-        const deletePhoto = await prisma.soloImage.delete({
+        const deletePhoto = await prisma.ourCoupleImage.delete({
             where : {
                 id 
             }
@@ -39,13 +40,14 @@ export const deletePhoto = async (id : string) => {
         if(!deletePhoto){
             throw new AppError("Deletion Photo Fail!",400);
         }
+        
 
     } catch (error) {
-        console.error("Delete Photo Error:", error);
-        throw new AppError("Delete Photo Error:", 500);
-    }
+        console.error("Delete Couple Photo Error:", error);
+        throw new AppError("Delete Couple Photo Error:", 500);
+    };
 
-    revalidatePath(ourPhotosPath);
-    redirect(ourPhotosPath)
+    revalidatePath(ourCouplePhotoPath);
+    redirect(ourCouplePhotoPath);
 
 }

@@ -1,6 +1,8 @@
+import DeleteSubmitButton from "@/components/DeleteButton";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { ourPhotosPath } from "@/constants/routes";
+import { deletePhoto } from "@/features/VideoAndImage/actions/delete-photo";
 import { SingleImage } from "@/features/VideoAndImage/actions/get-single";
 import { SingleReturn } from "@/types/singleReturnType";
 import { Star } from "lucide-react";
@@ -13,24 +15,30 @@ interface viewsParams {
 const page = async ({ params }: viewsParams) => {
   const { id } = await params;
 
-  console.log(id);
-
   const imageInfo = await SingleImage({ id });
+
+  if (!imageInfo || !imageInfo.success) {
+    return (
+      <div className="w-full h-[60vh] flex items-center justify-center text-pink-500">
+        This photo is no longer available 💔
+      </div>
+    );
+  }
 
   const { title, description, name, url } = imageInfo as SingleReturn;
 
   return (
     <div className="w-full flex flex-col items-center justify-center">
-      <Card className="w-80 h-100 mt-10  bg-pink-00">
+      <Card className="w-100 h-auto mt-10  bg-pink-00">
         <CardContent>
           <div className="overflow-hidden rounded-xl">
             <Image
               src={url}
-              width={300}
-              height={200}
+              width={400}
+              height={300}
               unoptimized
               alt="Beautiful scenery"
-              className="w-full h-auto"
+              className="w-full h-80"
             />
           </div>
         </CardContent>
@@ -55,20 +63,22 @@ const page = async ({ params }: viewsParams) => {
           <Button variant={"default"} className="bg-pink-300 hover:bg-pink-700">
             <Link href={ourPhotosPath}>Back</Link>
           </Button>
-          <DeleteButton></DeleteButton>
+          <DeleteButton id={id}></DeleteButton>
         </CardFooter>
       </Card>
     </div>
   );
 };
 
-const DeleteButton = () => {
+type deleteButtonProp = {
+  id: string;
+};
+
+const DeleteButton = ({ id }: deleteButtonProp) => {
   return (
     <div>
-      <form action="">
-        <Button type="submit" variant={"destructive"} className="hover:bg-red-900">
-          Delete
-        </Button>
+      <form action={deletePhoto.bind(null, id)}>
+        <DeleteSubmitButton />
       </form>
     </div>
   );

@@ -1,9 +1,16 @@
 import FirstPage from "@/features/main/components/FirstPage";
+import { GetSignUrl } from "@/lib/get-signUrl";
 
-export default function Home() {
+export default async function Home() {
+  const framUrl = await GetSignUrl("onlyProfile/chitthu.jpg");
+
+  if(!framUrl){
+    return;
+  };
+
   return (
     <>
-      <FirstPage />
+      <FirstPage frameUrl={framUrl.signUrl} />
     </>
   );
 }

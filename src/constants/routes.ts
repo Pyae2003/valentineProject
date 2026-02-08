@@ -9,11 +9,13 @@ export const blindbox = "/blindbox"
 export const addmusic = "/dashboard/addmusic"
 
 export const ourPhotosPath = "/dashboard/our-photos"
-export const viewPath = (id : string) => `/dashboard/our-photos/views/${id}}`
+export const viewPath = (id : string) => `/dashboard/our-photos/views/${id}`
 export const addPath = "/dashboard/our-photos/added"
 
 export const ourCouplePhotoPath = "/dashboard/ourcouple-photos"
 export const SaveCouplePhotoPath = "/dashboard/ourcouple-photos/added"
+export const viewSaveCouplePath = (id : string) => `/dashboard/ourcouple-photos/views/${id}`
+
 
 export const ourSweetieMemoryPath = "/dashboard/oursweeties-memory"
 export const SaveMemoryPath = "/dashboard/oursweeties-memory/added"

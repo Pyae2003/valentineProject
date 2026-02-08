@@ -6,17 +6,18 @@ import { Heart } from "lucide-react"; // npm install lucide-react
 import { Toggle } from "@/components/ui/toggle";
 
 interface Props {
-  leftImg: string;
   leftName: string;
-  rightImg: string;
   rightName: string;
+  boyUrl :string,
+  girlUrl : string
+  
 }
 
 const GlowingHeartConnection: React.FC<Props> = ({
-  leftImg,
   leftName,
-  rightImg,
   rightName,
+  boyUrl,
+  girlUrl
 }) => {
   return (
     <>
@@ -84,8 +85,9 @@ const GlowingHeartConnection: React.FC<Props> = ({
             <div className="relative w-16 h-16 sm:w-24 sm:h-24 rounded-full p-1 bg-gradient-to-tr from-pink-300 to-pink-100 shadow-lg">
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white">
                 <Image
-                  src={leftImg}
+                  src={boyUrl}
                   alt={leftName}
+                  unoptimized
                   fill
                   className="object-cover mb-2"
                 />
@@ -120,8 +122,9 @@ const GlowingHeartConnection: React.FC<Props> = ({
             <div className="relative w-16 h-16 sm:w-24 sm:h-24 rounded-full p-1 bg-gradient-to-bl from-pink-300 to-pink-100 shadow-lg">
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white">
                 <Image
-                  src={rightImg}
+                  src={girlUrl}
                   alt={rightName}
+                  unoptimized
                   fill
                   className="object-cover"
                 />

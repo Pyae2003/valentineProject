@@ -1,39 +1,40 @@
 import React from "react";
-import { ImageResult } from "../actions/get-allPhoto";
 import VideoAndImageFrameWrapperSimple from "@/components/VideoAndImageFrameWrapperSimple";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ArrowUp01Icon } from "lucide-react";
 import { viewPath } from "@/constants/routes";
+import { ImageResult } from "../actions/get-allPhoto";
 
 type OurAllPhotoProps = {
   AllImage: ImageResult[];
 };
+
 const OurAllPhotos = ({ AllImage }: OurAllPhotoProps) => {
   return (
-    <div>
-      {!!AllImage &&
-        AllImage.map((image) => (
-          <div className="w-full max-w-sm" key={image.id}>
+    <div className="w-full px-4 sm:px-6 lg:px-10 py-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {AllImage?.map((image) => (
+          <div key={image.id} className="w-full">
             <VideoAndImageFrameWrapperSimple
-              title="Our Photo Collections"
-              description="Little moments matter."
+              title={image.title}
+              description={image.description}
               Footer={<FooterButton path={viewPath(image.id)} />}
             >
-              <div className="overflow-hidden rounded-xl">
+              <div className="relative w-full aspect-[4/3] overflow-hidden rounded-xl">
                 <Image
-                  src={image.url ? image.url : ""}
-                  width={400}
-                  height={300}
+                  src={image.url ?? ""}
+                  fill
                   unoptimized
-                  alt="Beautiful scenery"
-                  className="w-full h-auto object-cover"
+                  alt="Couple memory"
+                  className="object-cover transition-transform duration-300 hover:scale-105"
                 />
               </div>
             </VideoAndImageFrameWrapperSimple>
           </div>
         ))}
+      </div>
     </div>
   );
 };
@@ -41,16 +42,15 @@ const OurAllPhotos = ({ AllImage }: OurAllPhotoProps) => {
 type FooterButtonProps = {
   path: string;
 };
+
 const FooterButton = ({ path }: FooterButtonProps) => {
   return (
-    <div>
-      <Button variant={"link"}>
-        <Link href={path} className="flex space-x-2">
-          <ArrowUp01Icon />
-          View Details
-        </Link>
-      </Button>
-    </div>
+    <Button variant="default" asChild className="px-0 bg-pink-400 hover:bg-pink-700">
+      <Link href={path} className="flex items-center gap-2 text-sm">
+        <ArrowUp01Icon className="w-4 h-4" />
+        View Details
+      </Link>
+    </Button>
   );
 };
 

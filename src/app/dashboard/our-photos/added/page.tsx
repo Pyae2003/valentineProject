@@ -1,10 +1,28 @@
+import { loginPath } from '@/constants/routes';
 import AddImage from '@/features/VideoAndImage/components/AddImage'
-import React from 'react'
+import { getSession } from '@/Utils/get-sessions';
+import { redirect } from 'next/navigation';
 
-const page = () => {
+const page =async () => {
+  let session = null;
+
+  try {
+    session = await getSession();
+  } catch (error) {
+    console.error("Session error:", error);
+  }
+
+  if (!session) {
+    redirect(loginPath);
+  };
+  
   return (
     <div className="w-full flex items-center justify-center my-10">
-        <AddImage/>
+        {
+          !!session && (
+            <AddImage/>
+          )
+        }
     </div>
   )
 }

@@ -27,12 +27,12 @@ import { useAction } from "next-safe-action/hooks";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { blindbox, dashboard, loginPath } from "@/constants/routes";
+import { blindbox, dashboard } from "@/constants/routes";
 import { login } from "../actions";
 
-
 export function Login() {
-  const { execute, isPending, hasSucceeded, result, hasErrored } = useAction(login);
+  const { execute, isPending, hasSucceeded, result, hasErrored } =
+    useAction(login);
 
   const router = useRouter();
 
@@ -44,47 +44,41 @@ export function Login() {
     },
   });
 
-
   React.useEffect(() => {
     if (hasSucceeded) {
-      form.reset();
-      localStorage.setItem("IsLog-in", "One Time Login!");
       toast.success(result.data?.message, { position: "top-center" });
-      router.push(localStorage.getItem("Islog-in") ? dashboard : blindbox)
-    } else if (hasErrored) {
-      toast.error("Login Fail!", { position: "top-center" });
-      router.push(loginPath)
+      router.push(localStorage.getItem("IsLog-in") ? dashboard : blindbox);
+      localStorage.setItem("IsLog-in", "true");
     }
-  }, [hasErrored, hasSucceeded])
 
-  async function onSubmit({ username, password }: z.infer<typeof loginSchema>) {
-    await execute({ username, password });
-  };
+    if (hasErrored) {
+      toast.error("Login Fail!", { position: "top-center" });
+    }
+  }, [hasSucceeded, hasErrored]);
 
-
+  async function onSubmit(values: z.infer<typeof loginSchema>) {
+    await execute(values);
+  }
 
   return (
-    <Card className="w-full shadow-2xl text-pink-600 sm:max-w-md ">
+    <Card className="w-full sm:max-w-md shadow-2xl text-pink-600">
       <CardHeader>
         <CardTitle>🌸 Enter My Love Space</CardTitle>
-        <CardDescription>🐳 My special moments are waiting. </CardDescription>
+        <CardDescription>🐳 My special moments are waiting.</CardDescription>
       </CardHeader>
+
       <CardContent>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="login-form" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="username"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-title">
-                    Enter Username :
-                  </FieldLabel>
+                  <FieldLabel htmlFor="username">Enter Username :</FieldLabel>
                   <Input
                     {...field}
-                    id="form-rhf-demo-title"
-                    aria-invalid={fieldState.invalid}
-                    type="text"
+                    id="username"
                     placeholder="Username"
                     autoComplete="off"
                   />
@@ -94,20 +88,18 @@ export function Login() {
                 </Field>
               )}
             />
+
             <Controller
               name="password"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="form-rhf-demo-title">
-                    Enter Password :
-                  </FieldLabel>
+                  <FieldLabel htmlFor="password">Enter Password :</FieldLabel>
                   <Input
                     {...field}
-                    id="form-rhf-demo-title"
-                    aria-invalid={fieldState.invalid}
-                    placeholder="xxx"
+                    id="password"
                     type="password"
+                    placeholder="••••••"
                     autoComplete="off"
                   />
                   {fieldState.invalid && (
@@ -116,19 +108,26 @@ export function Login() {
                 </Field>
               )}
             />
-
           </FieldGroup>
         </form>
       </CardContent>
+
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="button" variant="outline" disabled={isPending}>
-            <Link href={"/"}>
-              Back
-            </Link>
+          <Button variant="outline" asChild disabled={isPending}>
+            <Link href="/">Back</Link>
           </Button>
-          <Button className="bg-pink-500 " type="submit" form="form-rhf-demo" disabled={isPending}>
-            {isPending ? <LoaderCircle className="animate-spin h-4 - w4" /> : ""} Login
+
+          <Button
+            className="bg-pink-500"
+            type="submit"
+            form="login-form"
+            disabled={isPending}
+          >
+            {isPending && (
+              <LoaderCircle className="animate-spin h-4 w-4 mr-2" />
+            )}
+            Login
           </Button>
         </Field>
       </CardFooter>

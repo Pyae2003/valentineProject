@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -23,13 +23,13 @@ import { LoaderCircle } from "lucide-react";
 import { useEffect } from "react";
 
 import { toast } from "sonner";
-import { addOurSoloImageSchema, imageFileSchema } from "../schemas";
-import { imageUploadUrl } from "../actions/imageUploadUrl";
-import { addPhotos } from "../actions/add-photo";
+import { addOurSoloImageSchema, imageFileSchema } from "../../schemas";
+import { coupleImageUploadUrl } from "../actions/coupleImageUploadUrl";
+import { addCouplePhotos } from "../actions/add-couple";
 
-const AddImage = () => {
+const AddCoupleImage = () => {
   const { execute, isPending, hasErrored, hasSucceeded } =
-    useAction(addPhotos);
+    useAction(addCouplePhotos);
 
 
   const form = useForm<z.infer<typeof addOurSoloImageSchema>>({
@@ -48,7 +48,7 @@ const AddImage = () => {
     description,
     image,
   }: z.infer<typeof addOurSoloImageSchema>) {
-
+    
     if (!image) {
       toast.warning("Please select an image!!", { position: "top-center" });
       return;
@@ -56,14 +56,14 @@ const AddImage = () => {
 
     const validatateFile = await imageFileSchema.safeParse(image);
 
-    console.log(validatateFile);
+    // console.log(validatateFile);
 
     if (!validatateFile.success) {
       toast.error("Invalid File?", { position: "top-center" });
       return;
     }
 
-    const { signedUrl, path } = await imageUploadUrl(validatateFile.data);
+    const { signedUrl, path } = await coupleImageUploadUrl(validatateFile.data);
 
     execute({
       name,
@@ -90,7 +90,9 @@ const AddImage = () => {
     } else {
       if (hasSucceeded) {
         form.reset();
-        toast.success("Image Saving Success", { position: "top-center" });
+        toast.success("Our Couple image Saving Success", {
+          position: "top-center",
+        });
       }
     }
   }, [hasErrored, hasSucceeded]);
@@ -98,19 +100,22 @@ const AddImage = () => {
   return (
     <Card className="w-full max-w-md text-pink-500">
       <CardHeader>
-        <CardTitle>My Heart</CardTitle>
-        <CardDescription>When I miss you…</CardDescription>
+        <CardTitle>Save Our Couple Image</CardTitle>
+        <CardDescription>
+          Not just images, but feelings we chose to keep. Our memories, our
+          world. ❤️
+        </CardDescription>
       </CardHeader>
 
       <CardContent>
-        <form id="AddMusicForm" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="coupleImageAddingForm" onSubmit={form.handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="name"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Song Title</FieldLabel>
+                  <FieldLabel>Name :</FieldLabel>
                   <Input
                     {...field}
                     autoComplete="false"
@@ -127,7 +132,7 @@ const AddImage = () => {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Song Title</FieldLabel>
+                  <FieldLabel> Title : </FieldLabel>
                   <Input {...field} placeholder="Enter title..." />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
@@ -141,8 +146,8 @@ const AddImage = () => {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Song Title</FieldLabel>
-                  <Input {...field} placeholder="Enter  Resons ..." />
+                  <FieldLabel> Description : </FieldLabel>
+                  <Input {...field} placeholder="Enter  Reasons ..." />
                   {fieldState.error && (
                     <FieldError errors={[fieldState.error]} />
                   )}
@@ -155,7 +160,7 @@ const AddImage = () => {
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Choose Audio : </FieldLabel>
+                  <FieldLabel>Choose Couple Image : </FieldLabel>
                   <Input
                     type="file"
                     accept="image/*"
@@ -185,13 +190,18 @@ const AddImage = () => {
           Reset
         </Button>
 
-        <Button type="submit" form="AddMusicForm" className="bg-pink-500" disabled={isPending} >
+        <Button
+          type="submit"
+          form="coupleImageAddingForm"
+          className="bg-pink-500"
+          disabled={isPending}
+        >
           {isPending && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-          Add Photo
+          Add Our Photo
         </Button>
       </CardFooter>
     </Card>
   );
 };
 
-export default AddImage;
+export default AddCoupleImage;

@@ -21,8 +21,6 @@ export const login = actionClient
         },
       });      
 
-      console.log("LOGIN DATA PAR",data);
-
       if( !data ){
         throw new AppError("Login Fail!",401);
       };

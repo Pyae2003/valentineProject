@@ -32,7 +32,7 @@ export default function RootLayout({
         <main className="bg-pink-200 min-h-screen flex items-center justify-center p-4">
           <div className="w-full max-w-7xl bg-pink-50 rounded-3xl p-6 md:p-10">
             <Toaster/>
-            <div className="w-full h-18 bg-pink-100 p-4 rounded-4xl ">
+            <div className="w-full h-18 bg-pink-100 p-4 rounded-4xl flex items-center justify-center ">
               <Header/>
             </div>
             {children}

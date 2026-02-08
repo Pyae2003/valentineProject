@@ -1,15 +1,15 @@
 "use server"
 
 import { actionClient, prisma } from "@/lib";
-import { addSoloImageServerSchema } from "../schemas";
-import { AppError } from "../../../../middleware";
 import { revalidatePath } from "next/cache";
-import { ourPhotosPath } from "@/constants/routes";
+import { ourCouplePhotoPath } from "@/constants/routes";
+import { AppError } from "../../../../../middleware";
+import { addSoloImageServerSchema } from "../../schemas";
 import { redirect } from "next/navigation";
 
-export const addPhotos = actionClient.inputSchema(addSoloImageServerSchema).action(async({parsedInput : {name,title,description,imagePath}})=>{
+export const addCouplePhotos = actionClient.inputSchema(addSoloImageServerSchema).action(async({parsedInput : {name,title,description,imagePath}})=>{
     try {
-        const addImage = await prisma.soloImage.create({
+        const addImage = await prisma.ourCoupleImage.create({
             data : {
                 name,
                 title,
@@ -21,11 +21,12 @@ export const addPhotos = actionClient.inputSchema(addSoloImageServerSchema).acti
         if(!addImage){
             throw new AppError("Image Adding Fail!",400);
         };
-        
+
     } catch (error) {
         console.error("SoloImage Adding:", error);
         throw new AppError("SoloImageAdding Error", 500);
     }
-    revalidatePath(ourPhotosPath);
-    redirect(ourPhotosPath);
+
+    revalidatePath(ourCouplePhotoPath);
+    redirect(ourCouplePhotoPath);
 })

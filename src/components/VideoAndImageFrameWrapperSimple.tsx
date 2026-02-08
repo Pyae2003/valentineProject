@@ -14,7 +14,7 @@ const VideoAndImageFrameWrapperSimple = ({title,description,children,Footer} : V
         <Card className='w-70 shadow-2xl'>
             <CardHeader className='h-30'>
                 <CardTitle>{title}</CardTitle>
-                <CardDescription>{description}</CardDescription>
+                <CardDescription className='line-clamp-2'>{description}</CardDescription>
             </CardHeader>
             <CardContent>
                 {children}

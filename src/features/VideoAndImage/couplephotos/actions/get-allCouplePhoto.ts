@@ -1,8 +1,8 @@
 "use server"
 
 import { prisma } from "@/lib";
-import { AppError } from "../../../../middleware";
 import { supabaseServer } from "@/lib/supabase-server";
+import { AppError } from "../../../../../middleware";
 
 
 export interface  ImageResult {
@@ -12,19 +12,20 @@ export interface  ImageResult {
     url : string | undefined
 }
 
-export const getAllSoloPhoto = async () => {
+export const getAllCouplePhoto = async () => {
     try {
-        const allPhoto = await prisma.soloImage.findMany({
+        const allPhoto = await prisma.ourCoupleImage.findMany({
             orderBy : {
                 createdAt : "desc"
             }
         });
 
-        const soloPhotosUrl = await Promise.all(
+
+        const coupleImageWithUrl = await Promise.all(
               allPhoto.map(async (image) => {
                 const { data, error } = await supabaseServer.storage
                   .from("OurCoupleImageAndVideo")
-                  .createSignedUrl(image.imagePath, 60 * 60 * 24);
+                  .createSignedUrl(image.imagePath, 60 * 60 * 24 * 7);
                 if(error){
                     return null;
                 };
@@ -39,7 +40,7 @@ export const getAllSoloPhoto = async () => {
             );
         
 
-        return  soloPhotosUrl.filter(Boolean) as ImageResult[];
+        return  coupleImageWithUrl.filter(Boolean) as ImageResult[];
         
 
     } catch (error) {

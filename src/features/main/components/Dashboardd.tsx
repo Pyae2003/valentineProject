@@ -5,13 +5,18 @@ import InputSongSearch from "./InputSongSearch";
 import SongList from "./SongList";
 import CountDown from "@/features/others/components/CountDown";
 import ImageAndVideo from "./ImageAndVideo";
+import Footer from "@/components/Footer";
 
 
 type dashboardProps = {
-  title: string;
+  title: string,
+  girlUrl : string,
+  boyUrl : string,
+  soloUrl : string,
+  coupleUrl : string
 };
 
-export default async function Dashboardd({ title }: dashboardProps) {
+export default async function Dashboardd({ title , girlUrl , boyUrl, soloUrl,coupleUrl}: dashboardProps) {
   const songs = await allAudio({ title });
 
   return (
@@ -21,10 +26,10 @@ export default async function Dashboardd({ title }: dashboardProps) {
       </h1>
 
       <GlowingHeartConnection
-        leftImg="/images/chittullay.jpg"
         leftName="Pyae Khant"
-        rightImg="/images/chittullay.jpg"
         rightName="Pyae Khant"
+        boyUrl={boyUrl}
+        girlUrl={girlUrl}
       />
 
       <div className="my-4">
@@ -39,10 +44,11 @@ export default async function Dashboardd({ title }: dashboardProps) {
             <CountDown />
           </div>
           <div>
-            <ImageAndVideo/>
+            <ImageAndVideo soloUrl={soloUrl} coupleUrl={coupleUrl}/>
           </div>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
