@@ -26,7 +26,7 @@ const SongList = ({ songs }: SongListProps) => {
         ))}
       </div>
       {!!currentAudio && <Audio {...currentAudio} />}
-    </div>
+      </div>
   );
 };
 

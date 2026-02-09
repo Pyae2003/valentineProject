@@ -19,7 +19,7 @@ const page = async () => {
     }
 
     return (
-        <div className="w-full flex items-center justify-center my-10">
+        <div className="w-full my-10">
             {
                 !!session && (
                     <AddCoupleImage />

@@ -11,7 +11,7 @@ const page = async () => {
   } catch (error) {
     console.error("Session error:", error);
   }
-
+  console.log(session);
   if (!session) {
     redirect(loginPath);
   };
@@ -19,7 +19,7 @@ const page = async () => {
   return (
     <div>
       {!!session && (
-        <div className="flex items-center justify-center m-12">
+        <div className="">
           <AddAudioForm />
         </div>
       )}

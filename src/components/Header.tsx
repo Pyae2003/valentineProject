@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/sheet";
 
 import { Button } from "@/components/ui/button";
+import { dashboard } from '../constants/routes';
 
 import {
   aboutUsPath,
@@ -65,8 +66,8 @@ const Header = () => {
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuLink href={reasonPath}>
-                  Reasons
+                <NavigationMenuLink href={dashboard}>
+                  dashboard
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -138,7 +139,7 @@ const Header = () => {
                 {[
                   { label: "About Us", href: aboutUsPath },
                   { label: "Content", href: contentsPath },
-                  { label: "Reasons", href: reasonPath },
+                  { label: "dashboard", href: dashboard },
                 ].map((item) => (
                   <Link
                     key={item.label}

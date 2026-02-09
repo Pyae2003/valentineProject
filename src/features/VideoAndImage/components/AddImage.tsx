@@ -1,4 +1,5 @@
-"use client"
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -19,9 +20,8 @@ import {
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import { useAction } from "next-safe-action/hooks";
-import { LoaderCircle } from "lucide-react";
+import { LoaderCircle, Heart } from "lucide-react";
 import { useEffect } from "react";
-
 import { toast } from "sonner";
 import { addOurSoloImageSchema, imageFileSchema } from "../schemas";
 import { imageUploadUrl } from "../actions/imageUploadUrl";
@@ -30,7 +30,6 @@ import { addPhotos } from "../actions/add-photo";
 const AddImage = () => {
   const { execute, isPending, hasErrored, hasSucceeded } =
     useAction(addPhotos);
-
 
   const form = useForm<z.infer<typeof addOurSoloImageSchema>>({
     resolver: zodResolver(addOurSoloImageSchema),
@@ -48,22 +47,23 @@ const AddImage = () => {
     description,
     image,
   }: z.infer<typeof addOurSoloImageSchema>) {
-
     if (!image) {
-      toast.warning("Please select an image!!", { position: "top-center" });
+      toast.warning("Please select an image 📸", {
+        position: "top-center",
+      });
       return;
     }
 
-    const validatateFile = await imageFileSchema.safeParse(image);
+    const validateFile = await imageFileSchema.safeParse(image);
 
-    console.log(validatateFile);
-
-    if (!validatateFile.success) {
-      toast.error("Invalid File?", { position: "top-center" });
+    if (!validateFile.success) {
+      toast.error("Invalid image file 😢", {
+        position: "top-center",
+      });
       return;
     }
 
-    const { signedUrl, path } = await imageUploadUrl(validatateFile.data);
+    const { signedUrl, path } = await imageUploadUrl(validateFile.data);
 
     execute({
       name,
@@ -72,12 +72,10 @@ const AddImage = () => {
       imagePath: path,
     });
 
-    console.log(signedUrl, path);
-
     await fetch(signedUrl, {
       method: "PUT",
       headers: {
-        "Content-Type": image!.type,
+        "Content-Type": image.type,
       },
       body: image,
     });
@@ -85,112 +83,157 @@ const AddImage = () => {
 
   useEffect(() => {
     if (hasErrored) {
-      toast.error("Image Creation Fail!", { position: "top-center" });
-      return;
-    } else {
-      if (hasSucceeded) {
-        form.reset();
-        toast.success("Image Saving Success", { position: "top-center" });
-      }
+      toast.error("Image creation failed 💔", {
+        position: "top-center",
+      });
+    }
+
+    if (hasSucceeded) {
+      form.reset();
+      toast.success("Image saved successfully 💕", {
+        position: "top-center",
+      });
     }
   }, [hasErrored, hasSucceeded]);
 
   return (
-    <Card className="w-full max-w-md text-pink-500">
-      <CardHeader>
-        <CardTitle>My Heart</CardTitle>
-        <CardDescription>When I miss you…</CardDescription>
-      </CardHeader>
+    <div className=" flex items-center justify-center px-4 py-10 ">
+      <Card className="w-full max-w-sm sm:max-w-md rounded-3xl shadow-2xl bg-white text-pink-600">
+        {/* Header */}
+        <CardHeader className="text-center space-y-2">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-pink-200">
+            <Heart className="text-pink-600" />
+          </div>
+          <CardTitle className="text-2xl font-bold">
+            My Heart
+          </CardTitle>
+          <CardDescription className="text-gray-500">
+            When I miss you…
+          </CardDescription>
+        </CardHeader>
 
-      <CardContent>
-        <form id="AddMusicForm" onSubmit={form.handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <Controller
-              name="name"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Song Title</FieldLabel>
-                  <Input
-                    {...field}
-                    autoComplete="false"
-                    placeholder="Enter Your Name..."
-                  />
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-            <Controller
-              name="title"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Song Title</FieldLabel>
-                  <Input {...field} placeholder="Enter title..." />
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+        {/* Form */}
+        <CardContent>
+          <form
+            id="AddMusicForm"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <FieldGroup className="space-y-5">
+              {/* Name */}
+              <Controller
+                name="name"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Your Name</FieldLabel>
+                    <Input
+                      {...field}
+                      placeholder="Enter your name…"
+                      className="h-11 rounded-xl"
+                    />
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
-            <Controller
-              name="description"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Song Title</FieldLabel>
-                  <Input {...field} placeholder="Enter  Resons ..." />
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
+              {/* Title */}
+              <Controller
+                name="title"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Photo Title</FieldLabel>
+                    <Input
+                      {...field}
+                      placeholder="Enter photo title…"
+                      className="h-11 rounded-xl"
+                    />
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
-            <Controller
-              name="image"
-              control={form.control}
-              render={({ field, fieldState }) => (
-                <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel>Choose Audio : </FieldLabel>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      field.onChange(file);
-                    }}
-                  />
-                  {fieldState.error && (
-                    <FieldError errors={[fieldState.error]} />
-                  )}
-                </Field>
-              )}
-            />
-          </FieldGroup>
-        </form>
-      </CardContent>
-      <CardFooter className="flex gap-2 mt-4">
-        <Button
-          type="button"
-          variant="outline"
-          disabled={isPending}
-          onClick={() => {
-            form.reset();
-          }}
-        >
-          Reset
-        </Button>
+              {/* Description */}
+              <Controller
+                name="description"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Description</FieldLabel>
+                    <Input
+                      {...field}
+                      placeholder="Why this photo matters…"
+                      className="h-11 rounded-xl"
+                    />
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
 
-        <Button type="submit" form="AddMusicForm" className="bg-pink-500" disabled={isPending} >
-          {isPending && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
-          Add Photo
-        </Button>
-      </CardFooter>
-    </Card>
+              {/* Image Upload */}
+              <Controller
+                name="image"
+                control={form.control}
+                render={({ field, fieldState }) => (
+                  <Field data-invalid={fieldState.invalid}>
+                    <FieldLabel>Choose Image</FieldLabel>
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) =>
+                        field.onChange(e.target.files?.[0])
+                      }
+                      className="
+                        h-11 rounded-xl
+                        file:mr-3 file:rounded-lg
+                        file:border-0 file:bg-pink-100
+                        file:px-4 file:py-2
+                        file:text-pink-600
+                        hover:file:bg-pink-200
+                      "
+                    />
+                    {fieldState.error && (
+                      <FieldError errors={[fieldState.error]} />
+                    )}
+                  </Field>
+                )}
+              />
+            </FieldGroup>
+          </form>
+        </CardContent>
+
+        {/* Footer */}
+        <CardFooter className="flex flex-col gap-3">
+          <Button
+            type="button"
+            variant="outline"
+            className="w-full rounded-xl"
+            disabled={isPending}
+            onClick={() => form.reset()}
+          >
+            Reset
+          </Button>
+
+          <Button
+            type="submit"
+            form="AddMusicForm"
+            className="w-full rounded-xl bg-pink-500 hover:bg-pink-600 flex items-center justify-center gap-2"
+            disabled={isPending}
+          >
+            {isPending && (
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+            )}
+            Add Photo
+          </Button>
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 
