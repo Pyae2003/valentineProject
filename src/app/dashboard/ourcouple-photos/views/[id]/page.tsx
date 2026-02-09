@@ -60,18 +60,18 @@ const page = async ({ params }: viewsParams) => {
   const { title, description, name, url } = imageInfo as SingleReturn;
 
   return (
-    <div className="min-h-screen bg-[#fffafa] py-8 px-4 flex items-center justify-center relative overflow-hidden">
+    <div className="min-h-screen mt-3 bg-[#fffafa] py-8 px-4 flex items-center justify-center relative overflow-hidden">
       
       {/* Floating Hearts */}
       <Heart className="absolute top-10 left-5 text-rose-200 animate-bounce text-2xl" />
       <Heart className="absolute top-32 right-10 text-rose-300 animate-bounce text-3xl" />
       <Heart className="absolute bottom-20 left-20 text-rose-100 animate-bounce text-2xl" />
 
-      <div className="w-full max-w-2xl mx-auto space-y-6">
+      <div className="w-full flex items-center justify-center max-w-2xl mx-auto space-y-6">
         {/* Image Card */}
-        <Card className="overflow-hidden border-none shadow-xl rounded-2xl transition-all duration-500 hover:shadow-rose-100 hover:-translate-y-1">
+        <Card className="overflow-hidden flex items-center justify-center border-none shadow-xl rounded-2xl transition-all duration-500 hover:shadow-rose-100 hover:-translate-y-1">
           <CardContent className="p-0">
-            <div className="relative w-full aspect-[4/5] sm:aspect-[3/4] md:aspect-video lg:aspect-video overflow-hidden bg-rose-50 rounded-2xl">
+            <div className="relative w-full flex items-center justify-center aspect-[4/5] sm:aspect-[3/4] md:aspect-video lg:aspect-video overflow-hidden bg-rose-50 rounded-2xl">
               <Image
                 src={url}
                 fill
