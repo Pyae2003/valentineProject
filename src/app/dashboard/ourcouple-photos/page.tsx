@@ -20,7 +20,7 @@ const page = async () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#fffafa] relative overflow-hidden pb-12">
+    <div className="min-h-screen flex justify-center align-bottom items-center bg-[#fffafa] relative overflow-hidden pb-12">
       
       {/* --- ROMANTIC AMBIANCE ELEMENTS (MOBILE OPTIMIZED) --- */}
       <div className="absolute top-[-5%] left-[-10%] w-64 h-64 bg-rose-100/50 rounded-full blur-3xl pointer-events-none" />
