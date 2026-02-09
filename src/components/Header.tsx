@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import { Menu } from "lucide-react";
 
@@ -24,7 +27,6 @@ import {
 } from "@/components/ui/sheet";
 
 import { Button } from "@/components/ui/button";
-import { allmusic, dashboard } from '../constants/routes';
 
 import {
   aboutUsPath,
@@ -32,21 +34,26 @@ import {
   addPath,
   contentsPath,
   SaveCouplePhotoPath,
+  allmusic,
+  dashboard,
 } from "@/constants/routes";
 
 const Header = () => {
+  const [open, setOpen] = useState(false);
+
   return (
     <header className="w-full px-4 py-3 bg-pink-100 border-b backdrop-blur">
-      <div className="flex items-center bg-pink-100 justify-between max-w-7xl mx-auto">
+      <div className="flex items-center justify-between max-w-7xl mx-auto">
 
-        <div className="flex items-center gap-2 bg-pink-100 rounded-4xl  ">
+        {/* LOGO */}
+        <div className="flex items-center gap-2">
           <span className="w-3 h-3 bg-pink-500 rounded-full" />
           <span className="font-semibold text-pink-600 tracking-wide">
             THWE ZIN MIN THANT
           </span>
         </div>
 
-        {/* DESKTOP MENU */}
+        {/* ================= DESKTOP MENU ================= */}
         <div className="hidden md:flex gap-8 text-sm text-pink-500 font-medium">
           <NavigationMenu>
             <NavigationMenuList>
@@ -72,10 +79,7 @@ const Header = () => {
               <NavigationMenuItem>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="link"
-                      className="text-pink-500 px-0"
-                    >
+                    <Button variant="link" className="text-pink-500 px-0">
                       Memories
                     </Button>
                   </DropdownMenuTrigger>
@@ -106,9 +110,9 @@ const Header = () => {
           </NavigationMenu>
         </div>
 
-        {/* MOBILE MENU */}
+        {/* ================= MOBILE MENU ================= */}
         <div className="md:hidden">
-          <Sheet>
+          <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Menu className="w-6 h-6 text-pink-500" />
@@ -123,7 +127,7 @@ const Header = () => {
                          border-l border-pink-200"
             >
               <SheetHeader className="text-center">
-                <SheetTitle className="text-pink-600 text-xl font-semibold tracking-wide">
+                <SheetTitle className="text-pink-600 text-xl font-semibold">
                   💖 Menu
                 </SheetTitle>
                 <p className="text-xs text-pink-400 mt-1">
@@ -142,6 +146,7 @@ const Header = () => {
                   <Link
                     key={item.label}
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     className="rounded-xl px-4 py-3
                                hover:bg-pink-100
                                transition-all duration-200"
@@ -167,6 +172,7 @@ const Header = () => {
                   <Link
                     key={item.label}
                     href={item.href}
+                    onClick={() => setOpen(false)}
                     className="rounded-xl px-4 py-3
                                bg-white/60 backdrop-blur
                                shadow-sm

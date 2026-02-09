@@ -65,8 +65,7 @@ const ShowAllAudio = ({ allAudio, isLoading }: ShowAllAudioProps) => {
         ))}
       </div>
       <div className="flex items-center justify-center">
-      {currentAudio && <Audio {...currentAudio} />}
-
+        {currentAudio && <Audio {...currentAudio} />}
       </div>
     </>
   );
@@ -88,53 +87,62 @@ const AudioCard = ({
   );
 
   return (
-    <Card
-      onClick={() =>
-        setCurrentAudio({ id: audio.id, title: audio.title, url: audio.url })
-      }
-      className="flex h-full flex-col rounded-2xl border bg-background/80 backdrop-blur transition hover:shadow-xl"
-    >
-      <CardHeader>
-        <p className="text-xs uppercase tracking-wide text-muted-foreground">
-          Song title
-        </p>
-        <CardTitle className="line-clamp-2 text-lg">{audio.title}</CardTitle>
-      </CardHeader>
+    <div>
+      <Card className="flex h-full flex-col rounded-2xl border bg-background/80 backdrop-blur transition hover:shadow-xl">
+        <div
+          onClick={() =>
+            setCurrentAudio({
+              id: audio.id,
+              title: audio.title,
+              url: audio.url,
+            })
+          }
+        >
+          <CardHeader>
+            <p className="text-xs uppercase tracking-wide text-muted-foreground">
+              Song title
+            </p>
+            <CardTitle className="line-clamp-2 text-lg">
+              {audio.title}
+            </CardTitle>
+          </CardHeader>
 
-      <CardContent className="flex-1 space-y-3">
-        <div className="text-sm">
-          <span className="text-muted-foreground">Created</span>
-          <p className="font-medium">
-            {audio.createdAt.toLocaleDateString("en-GB", {
-              day: "2-digit",
-              month: "short",
-              year: "numeric",
-            })}
-          </p>
+          <CardContent className="flex-1 space-y-3">
+            <div className="text-sm">
+              <span className="text-muted-foreground">Created</span>
+              <p className="font-medium">
+                {audio.createdAt.toLocaleDateString("en-GB", {
+                  day: "2-digit",
+                  month: "short",
+                  year: "numeric",
+                })}
+              </p>
+            </div>
+
+            {/* 🎵 Waveform Preview */}
+            <div className="flex h-10 items-end gap-1 overflow-hidden rounded-md bg-muted p-2">
+              {waveform.map((height, i) => (
+                <span
+                  key={i}
+                  className="w-1 rounded bg-pink-400 animate-pulse"
+                  style={{ height: `${height}%` }}
+                />
+              ))}
+            </div>
+          </CardContent>
         </div>
 
-        {/* 🎵 Waveform Preview */}
-        <div className="flex h-10 items-end gap-1 overflow-hidden rounded-md bg-muted p-2">
-          {waveform.map((height, i) => (
-            <span
-              key={i}
-              className="w-1 rounded bg-pink-400 animate-pulse"
-              style={{ height: `${height}%` }}
-            />
-          ))}
-        </div>
-      </CardContent>
+        <CardFooter className="flex gap-3">
+          <Button asChild variant="secondary" className=" gap-2">
+            <Link href={dashboard}>
+              <ArrowLeft className="h-4 w-4" /> Back
+            </Link>
+          </Button>
 
-      <CardFooter className="flex gap-3">
-        <Button asChild variant="secondary" className=" gap-2">
-          <Link href={dashboard}>
-            <ArrowLeft className="h-4 w-4" /> Back
-          </Link>
-        </Button>
-
-        <DeleteConfirm id={audio.id} />
-      </CardFooter>
-    </Card>
+          <DeleteConfirm id={audio.id} />
+        </CardFooter>
+      </Card>
+    </div>
   );
 };
 
