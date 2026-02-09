@@ -32,7 +32,6 @@ import {
   addPath,
   contentsPath,
   SaveCouplePhotoPath,
-  SaveMemoryPath,
 } from "@/constants/routes";
 
 const Header = () => {
@@ -66,7 +65,7 @@ const Header = () => {
 
               <NavigationMenuItem>
                 <NavigationMenuLink href={dashboard}>
-                  dashboard
+                  Dashboard
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -138,7 +137,7 @@ const Header = () => {
                 {[
                   { label: "About Us", href: aboutUsPath },
                   { label: "Content", href: contentsPath },
-                  { label: "dashboard", href: dashboard },
+                  { label: "Dashboard", href: dashboard },
                 ].map((item) => (
                   <Link
                     key={item.label}
@@ -161,7 +160,7 @@ const Header = () => {
                 {/* MEMORY LINKS */}
                 {[
                   { label: "🎵 Add Music", href: addmusic },
-                  { label: "💌 Save Memory", href: SaveMemoryPath },
+                  { label: "💌 All Music", href: allmusic },
                   { label: "📸 Save Photo", href: addPath },
                   { label: "💑 Our Couple Photo", href: SaveCouplePhotoPath },
                 ].map((item) => (

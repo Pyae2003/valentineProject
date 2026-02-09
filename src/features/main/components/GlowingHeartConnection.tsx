@@ -1,143 +1,142 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Heart } from "lucide-react"; // npm install lucide-react
-import { Toggle } from "@/components/ui/toggle";
+import { Heart, Sparkles } from "lucide-react";
 
 interface Props {
   leftName: string;
   rightName: string;
-  boyUrl :string,
-  girlUrl : string
-  
+  boyUrl: string;
+  girlUrl: string;
 }
 
-const GlowingHeartConnection: React.FC<Props> = ({
+export default function GlowingHeartConnection({
   leftName,
   rightName,
   boyUrl,
-  girlUrl
-}) => {
+  girlUrl,
+}: Props) {
+  // Animation flickering မဖြစ်အောင် mounting check လုပ်ခြင်း
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
+
   return (
     <>
-      {/* Custom CSS for Flow Animation 
-        - လိုင်းစီးဆင်းတဲ့ Effect အတွက် Keyframes
-      */}
-      <style jsx>{`
-        @keyframes move {
-          0% {
-            transform: translateX(-100%);
-            opacity : 0;
-          }
-          30% {
-            opacity : 1;
-          }
-            100%{
-            transform : translateX(300%);
-            opacity : 0;
-            }
+      <style jsx global>{`
+        /* Center Heart Glow - Static shadow for immediate load */
+        .heart-base-glow {
+          filter: drop-shadow(0 0 10px rgba(236, 72, 153, 0.5));
         }
-        @keyframes rightmove {
-          0% {
-            transform: translateX(300%);
-            opacity : 0;
-          }
-          30% {
-            opacity : 1;
-          }
-            100%{
-            transform : translateX(-200%);
-            opacity : 0;
-            }
+
+        @keyframes heartPulse {
+          0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px #f472b6); }
+          50% { transform: scale(1.1); filter: drop-shadow(0 0 20px #ec4899); }
         }
-        .animate-flow-line {
-          background-size: 200% 100%;
-          animation: move 3s linear infinite;
+
+        /* Flowing Stream Animation */
+        @keyframes streamToCenter {
+          0% { offset-distance: 0%; opacity: 0; transform: scale(0.6); }
+          10% { opacity: 1; }
+          90% { opacity: 1; }
+          100% { offset-distance: 100%; opacity: 0; transform: scale(0.6); }
         }
-        .animate-right-flow-line {
-          background-size: 200% 200%;
-          animation: rightmove 3s linear infinite;
+
+        .animate-center-heart {
+          animation: heartPulse 2s ease-in-out infinite;
         }
-        /* အလင်းဖြာထွက်ပြီး မှိတ်တုတ်မှိတ်တုတ်ဖြစ်မယ့် Effect */
-        @keyframes softGlow {
-          0%,
-          100% {
-            opacity: 0.6;
-            transform: scale(1);
-          }
-          50% {
-            opacity: 1;
-            transform: scale(1.1);
-          }
+
+        .heart-stream {
+          position: absolute;
+          animation: streamToCenter 3s linear infinite;
+          /* CSS Motion Path for better control */
         }
-        .animate-soft-glow {
-          animation: softGlow 2s ease-in-out infinite;
+        
+        /* Mobile specific animation adjustment */
+        @keyframes flowMobileRight {
+          0% { transform: translateX(-20px); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(60px); opacity: 0; }
         }
+        @keyframes flowMobileLeft {
+          0% { transform: translateX(20px); opacity: 0; }
+          50% { opacity: 1; }
+          100% { transform: translateX(-60px); opacity: 0; }
+        }
+
+        .m-flow-right { animation: flowMobileRight 2.5s linear infinite; }
+        .m-flow-left { animation: flowMobileLeft 2.5s linear infinite; }
       `}</style>
 
-      <div className="flex flex-col items-center justify-center w-full py-10">
-        <div className="flex items-center justify-center w-full max-w-4xl px-4 gap-0 sm:gap-2">
-          {/* =======================
-              LEFT PROFILE SECTION 
-             ======================= */}
-          <div className="flex flex-col items-center gap-3 relative z-10 shrink-0">
-            <div className="relative w-16 h-16 sm:w-24 sm:h-24 rounded-full p-1 bg-gradient-to-tr from-pink-300 to-pink-100 shadow-lg">
-              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white">
-                <Image
-                  src={boyUrl}
-                  alt={leftName}
-                  unoptimized
-                  fill
-                  className="object-cover mb-2"
-                />
-              </div>
-            </div>
-            <Toggle className="text-sm sm:text-base font-bold text-pink-600 absolute -bottom-8 whitespace-nowra">
-              {" "}
-              🌼 {leftName}
-            </Toggle>
-          </div>
+      <section className="w-full flex items-center justify-center px-1 py-12 gap-0 sm:gap-4 max-w-lg mx-auto overflow-visible">
+        
+        {/* LEFT PROFILE */}
+        <Profile img={boyUrl} name={leftName} isLeft={true} />
 
-          <div className="flex-1 h-2 w-8 md:h-[15px] bg-pink-100 rounded-full mx-2 sm:mx-4  overflow-hidden relative shadow-inner">
-            <div className="absolute top-0 left-0 h-full w-1/3 bg-gradient-to-r from-transparent bg-pink-500 via-pink-500 to-transparent animate-flow-line"></div>
-          </div>
-
-          <div className="relative flex items-center justify-center shrink-0 mx-2">
-            <div className="absolute w-20 h-20 bg-pink-500 rounded-full blur-2xl animate-soft-glow opacity-60"></div>
-
-            <div className="relative z-10 bg-white p-4 rounded-full shadow-xl border-4 border-pink-50">
-              <Heart
-                className="w-8 h-8 sm:w-10 sm:h-10 text-pink-600 fill-pink-600"
-                strokeWidth={1}
-              />
-            </div>
-          </div>
-
-          <div className="flex-1 h-2 w-8 md:h-[15px] bg-pink-100 rounded-full mx-2 sm:mx-4 overflow-hidden relative shadow-inner">
-            <div className="absolute top-0 right-0 h-full w-1/3 bg-linear-to-r from-transparent bg-pink-600  via-pink-500 to-transparent  animate-right-flow-line"></div>
-          </div>
-
-          <div className="flex flex-col items-center gap-3 relative z-10 shrink-0">
-            <div className="relative w-16 h-16 sm:w-24 sm:h-24 rounded-full p-1 bg-gradient-to-bl from-pink-300 to-pink-100 shadow-lg">
-              <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-white">
-                <Image
-                  src={girlUrl}
-                  alt={rightName}
-                  unoptimized
-                  fill
-                  className="object-cover"
-                />
-              </div>
-            </div>
-            <Toggle className="text-sm sm:text-base font-bold text-pink-600 absolute -bottom-8 whitespace-nowra">
-              {" "}
-              🌼 {rightName}
-            </Toggle>
+        {/* LEFT LINE */}
+        <div className="relative flex-1 h-[2px] bg-gradient-to-r from-pink-300/20 to-pink-400">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Heart size={12} className="text-pink-500 fill-pink-500 m-flow-right" style={{ animationDelay: '0s' }} />
+            <Heart size={10} className="text-pink-400 fill-pink-400 m-flow-right" style={{ animationDelay: '1.2s' }} />
           </div>
         </div>
-      </div>
+
+        {/* CENTER HEART UNIT */}
+        <div className="relative flex items-center justify-center shrink-0 z-10 px-1">
+          <div className="absolute w-14 h-14 md:w-20 md:h-20 bg-pink-400/20 rounded-full blur-xl" />
+          <div className="relative bg-white p-3 md:p-5 rounded-full border-2 border-pink-100 shadow-lg animate-center-heart">
+            <Heart className="w-6 h-6 md:w-10 md:h-10 text-pink-500 fill-pink-500" />
+            <Sparkles className="absolute -top-1 -right-1 w-4 h-4 text-yellow-400 animate-pulse" />
+          </div>
+        </div>
+
+        {/* RIGHT LINE */}
+        <div className="relative flex-1 h-[2px] bg-gradient-to-l from-pink-300/20 to-pink-400">
+          <div className="absolute inset-0 flex items-center justify-center">
+            <Heart size={12} className="text-pink-500 fill-pink-500 m-flow-left" style={{ animationDelay: '0.6s' }} />
+            <Heart size={10} className="text-pink-400 fill-pink-400 m-flow-left" style={{ animationDelay: '1.8s' }} />
+          </div>
+        </div>
+
+        {/* RIGHT PROFILE */}
+        <Profile img={girlUrl} name={rightName} isLeft={false} />
+      </section>
     </>
   );
-};
-export default GlowingHeartConnection;
+}
+
+function Profile({ img, name, isLeft }: { img: string; name: string; isLeft: boolean }) {
+  return (
+    <div className="flex flex-col items-center shrink-0 z-20">
+      {/* Circle Container - Responsive sizes */}
+      <div className="relative w-14 h-14 sm:w-20 sm:h-20 md:w-28 md:h-28 aspect-square">
+        <div className="w-full h-full rounded-full p-0.5 bg-gradient-to-tr from-pink-500 to-rose-300">
+          <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-white shadow-sm">
+            <Image 
+              src={img} 
+              alt={name} 
+              fill 
+              className="object-cover"
+              priority 
+              unoptimized // Animation glitch ကင်းစေရန်
+            />
+          </div>
+        </div>
+        {/* Little status dot */}
+        <div className={`absolute bottom-1 ${isLeft ? 'right-0' : 'left-0'} w-3 h-3 bg-green-500 border-2 border-white rounded-full`} />
+      </div>
+
+      {/* Name Tag */}
+      <div className="mt-2 max-w-[70px] sm:max-w-none">
+        <p className="text-[9px] sm:text-xs font-bold text-pink-700 bg-white/90 px-2 py-0.5 rounded-full shadow-sm border border-pink-100 truncate text-center uppercase tracking-tighter">
+          {name}
+        </p>
+      </div>
+    </div>
+  );
+}
