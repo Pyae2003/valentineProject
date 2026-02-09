@@ -47,7 +47,7 @@ export const allAudio = async ({ title }: audioStateLogicProps) => {
     return  audiosWithUrl.filter(Boolean) as AudioResult[];
 
   } catch (error) {
-    console.log("Find Many audio from query Error!", error);
-    throw new AppError("Find Many audio from query Error!", 400);
+    console.log("Find Many audio Url from query Error!", error);
+    throw new AppError("Find Many audio Url from query Error!", 400);
   }
 };

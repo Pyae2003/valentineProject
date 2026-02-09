@@ -11,6 +11,11 @@ interface PageProps {
   };
 };
 
+interface SignedUrlResult {
+  signUrl: string;
+}
+
+
 export const dynamic = "force-dynamic";
 
 
@@ -30,23 +35,27 @@ const page = async ({ searchParams }: PageProps) => {
     redirect(loginPath);
   };
   
-  const [girlUrl, boyUrl, soloUrl, coupleUrl] = await Promise.all([
+  // ✅ SAFE SIGNED URL FETCH
+  const results = await Promise.allSettled([
     GetSignUrl("onlyProfile/chitthu.jpg"),
     GetSignUrl("onlyProfile/IMG_0754.jpeg"),
     GetSignUrl("onlyProfile/kaungmalay.jpg"),
     GetSignUrl("onlyProfile/kaungmalay2.jpg"),
   ]);
 
-  if(!girlUrl || !boyUrl || !soloUrl || !coupleUrl){
-    return;
-  }
+  const getSafeUrl = (result: PromiseSettledResult<SignedUrlResult | null>) => {
+    if (result.status === "fulfilled" && result.value?.signUrl) {
+      return result.value.signUrl;
+    }
+    return "/kaungmalay3.jpg";
+  };
 
   const dashboardProp = {
     title,
-    girlUrl : girlUrl.signUrl,
-    boyUrl : boyUrl.signUrl,
-    soloUrl : soloUrl.signUrl,
-    coupleUrl : coupleUrl.signUrl
+    girlUrl: getSafeUrl(results[0]),
+    boyUrl: getSafeUrl(results[1]),
+    soloUrl: getSafeUrl(results[2]),
+    coupleUrl: getSafeUrl(results[3]),
   };
 
   return (

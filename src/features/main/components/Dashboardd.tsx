@@ -25,7 +25,7 @@ export default async function Dashboardd({
   const songs = await allAudio({ title });
 
   return (
-    <div className="min-h-screen bg-pink-50 flex flex-col items-center pt-20 pb-24 sm:pb-0">
+    <div className="min-h-screen bg-pink-50 flex flex-col items-center pt-20 pb-32">
       <h1 className="text-2xl font-bold text-pink-800 mb-5">
         Our Love Journey
       </h1>
@@ -41,13 +41,7 @@ export default async function Dashboardd({
         <InputSongSearch />
 
         <div className="mt-2 mb-5 w-full flex flex-col items-center">
-          {!!songs ? (
-            <SongList songs={songs} />
-          ) : (
-            toast.warning("This Audio Not Found!", {
-              position: "top-left",
-            })
-          )}
+          {songs && <SongList songs={songs} />}
 
           <div className="my-5">
             <CountDown />

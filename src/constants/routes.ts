@@ -6,7 +6,9 @@ export const newsPath = "/news-path"
 export const loginPath = "/log-in"
 export const dashboard = "/dashboard"
 export const blindbox = "/blindbox"
+
 export const addmusic = "/dashboard/addmusic"
+export const allmusic = "/dashboard/allmusic"
 
 export const ourPhotosPath = "/dashboard/our-photos"
 export const viewPath = (id : string) => `/dashboard/our-photos/views/${id}`

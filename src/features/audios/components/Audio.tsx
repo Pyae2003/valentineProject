@@ -56,25 +56,33 @@ const Audio = ({ title, url }: AudioResult) => {
   };
 
   return (
-    <div className="sm:hidden">
-    {/* Mobile Bottom Audio Player */}
     <div
       className="
-        fixed bottom-0 left-0 right-0
-        bg-pink-100 backdrop-blur-xl
-        border-t border-pink-200
-        px-4 pt-3 pb-[env(safe-area-inset-bottom)]
-        shadow-2xl
+        fixed bottom-0 
         z-50
+        w-80
+        bg-gradient-to-r from-pink-100 via-pink-50 to-pink-100
+        backdrop-blur-xl
+        border-t border-pink-200
+        px-4 sm:px-6
+        pt-3 pb-[env(safe-area-inset-bottom)]
+         rounded-2xl  
+        shadow-[0_-10px_30px_rgba(236,72,153,0.25)]
       "
     >
       <audio ref={audioRef} src={url} />
 
       {/* Header */}
-      <div className="flex items-center gap-3 mb-2">
+      <div className="flex items-center gap-4 mb-2">
         <Button
           onClick={togglePlay}
-          className="w-10 h-10 rounded-full bg-pink-500 text-white"
+          className="
+            w-11 h-11
+            rounded-full
+            bg-pink-500 hover:bg-pink-600
+            text-white
+            shadow-md
+          "
         >
           {isPlaying ? (
             <CirclePauseIcon className="h-5 w-5" />
@@ -83,12 +91,12 @@ const Audio = ({ title, url }: AudioResult) => {
           )}
         </Button>
 
-        <span className="flex-1 text-sm font-medium truncate text-gray-800">
+        <span className="flex-1 text-sm sm:text-base font-semibold truncate text-pink-700">
           {title} 💗
         </span>
       </div>
 
-      {/* Progress */}
+      {/* Slider */}
       <Slider
         value={currentTime}
         max={durationTime}
@@ -98,12 +106,11 @@ const Audio = ({ title, url }: AudioResult) => {
       />
 
       {/* Time */}
-      <div className="flex justify-between text-xs mt-1 text-gray-600">
+      <div className="flex justify-between text-xs sm:text-sm mt-1 text-pink-600">
         <span>{formatTime(currentTime[0])}</span>
         <span>{formatTime(durationTime)}</span>
       </div>
     </div>
-  </div>
   );
 };
 

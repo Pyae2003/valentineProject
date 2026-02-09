@@ -11,22 +11,34 @@ type SongListProps = {
 const SongList = ({ songs }: SongListProps) => {
   const [currentAudio, setCurrentAudio] = useState<AudioResult | null>(null);
   return (
-    <div>
-      <div className="w-50 mb:w-180 mx-auto mt-3 bg-white rounded-2xl shadow-xl overflow-hidden">
+    <div className="w-full px-4">
+      <div className="mx-auto mt-3 max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
         {songs.map((song) => (
           <button
             key={song.id}
-            className="w-full text-left px-6 py-4 
-           hover:bg-pink-50 transition flex justify-between"
             onClick={() => setCurrentAudio(song)}
+            className="
+              w-full flex justify-between items-center
+              px-5 py-4
+              text-left
+              hover:bg-pink-50
+              active:scale-[0.98]
+              transition
+            "
           >
-            <span className="text-sm font-medium">🎼 {song.title}</span>
-            <span className="text-pink-400">♡</span>
+            <span className="text-sm font-medium truncate text-gray-700">
+              🎼 {song.title}
+            </span>
+            <span className="text-pink-400 text-lg">♡</span>
           </button>
         ))}
       </div>
-      {!!currentAudio && <Audio {...currentAudio} />}
+
+      {/* Global Audio Player */}
+      <div className="flex items-center justify-center">
+        {currentAudio && <Audio {...currentAudio} />}
       </div>
+    </div>
   );
 };
 
