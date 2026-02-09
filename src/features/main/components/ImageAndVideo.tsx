@@ -4,10 +4,10 @@ import { ourCouplePhotoPath, ourPhotosPath } from "@/constants/routes";
 import Image from "next/image";
 
 type ImageAndVideo = {
-  soloUrl : string,
-  coupleUrl : string
-}
-const ImageAndVideo = ({soloUrl , coupleUrl} : ImageAndVideo) => {
+  soloUrl: string;
+  coupleUrl: string;
+};
+const ImageAndVideo = ({ soloUrl, coupleUrl }: ImageAndVideo) => {
   const collections = [
     {
       id: 1,
@@ -45,17 +45,6 @@ const ImageAndVideo = ({soloUrl , coupleUrl} : ImageAndVideo) => {
               key={item.id}
               className="
                 w-full 
-                max-w-120
-                bg-pink-50/90
-                backdrop-blur-sm
-                rounded-3xl 
-                shadow-lg 
-                hover:shadow-2xl 
-                transition-all 
-                duration-300 
-                ease-out
-                hover:-translate-y-2
-                border border-pink-100
                 flex flex-col
                 mx-auto
                 items-center
@@ -63,8 +52,13 @@ const ImageAndVideo = ({soloUrl , coupleUrl} : ImageAndVideo) => {
               "
             >
               {/* Card Padding - စာသားတွေ ဘောင်မထိအောင် padding ထည့်ထားသည် */}
-              <div className="p-6 h-full flex flex-col justify-between">
-                
+              <div
+                className="p-6 h-full flex flex-col justify-between    rounded-3xl 
+                transition-all 
+                duration-300 
+                ease-out
+                hover:-translate-y-2"
+              >
                 <VideoAndImageFrameWrapperSimple
                   title={item.title}
                   description={item.description}
@@ -88,7 +82,6 @@ const ImageAndVideo = ({soloUrl , coupleUrl} : ImageAndVideo) => {
                     />
                   </div>
                 </VideoAndImageFrameWrapperSimple>
-
               </div>
             </div>
           ))}

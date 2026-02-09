@@ -8,8 +8,8 @@ type FooterButtonProp = {
 }
 const FooterButton = ({name ,path } : FooterButtonProp) => {
   return (
-    <div>
-        <Button>
+    <div className='w-full'>
+        <Button className='w-full bg-pink-500 hover:bg-pink-700' >
             <Link href={path}>
                 {name}
             </Link>

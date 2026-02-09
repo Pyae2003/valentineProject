@@ -18,15 +18,8 @@ const Page = async () => {
   if (!session) redirect(loginPath);
 
   return (
-    <div className="min-h-screen w-full bg-[#fffafa] overflow-x-hidden relative">
-      
-      {/* Soft background blobs */}
-      <div className="absolute -top-24 -left-32 w-40 h-40 sm:w-64 sm:h-64 bg-rose-100/40 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-20 -right-32 w-44 h-44 sm:w-72 sm:h-72 bg-pink-100/30 rounded-full blur-3xl pointer-events-none" />
-
-      {/* MAIN CONTAINER */}
-      <div className="w-full md:max-w-5xl md:mx-auto px-3 sm:px-4 pt-8 md:pt-16 relative z-10">
-
+    <div className="w-full mt-10 min-h-screen bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-rose-100 via-slate-50 to-white">
+     
         {/* HEADER */}
         <header className="flex flex-col items-center text-center border-b border-rose-100/60 pb-8 mb-8">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white shadow-sm border border-rose-100 mb-6">
@@ -44,7 +37,7 @@ const Page = async () => {
             Every picture tells a story of us. These are the moments I&apos;ll cherish forever.
           </p>
 
-          <div className="mt-6 inline-flex items-center gap-2 text-rose-500 bg-rose-50/50 px-4 py-2 rounded-2xl border border-rose-100">
+          <div className="mt-6 inline-flex items-center gap-2 text-rose-500 bg-rose-50/60 px-4 py-2 rounded-2xl border border-rose-100 shadow-sm">
             <Sparkles size={16} />
             <span className="text-sm font-semibold">
               {allCoupleImage?.length || 0} Photos
@@ -53,9 +46,15 @@ const Page = async () => {
         </header>
 
         {/* PHOTO FEED */}
-        <main className="w-full">
-          <OurAllCouplePhotos AllCoupleImage={allCoupleImage} />
-        </main>
+        <div className="max-w-[1600px] mx-auto">
+        {
+          !!session && (
+            <div className="animate-in fade-in slide-in-from-bottom-4 duration-1000">
+              <OurAllCouplePhotos AllCoupleImage={allCoupleImage}/>
+            </div>
+          )
+        }
+      </div>
 
         {/* FOOTER */}
         <footer className="mt-12 py-8 text-center border-t border-rose-100/40">
@@ -63,7 +62,6 @@ const Page = async () => {
             Forever & Always Together
           </p>
         </footer>
-      </div>
     </div>
   );
 };

@@ -27,7 +27,7 @@ const page = async () => {
       </section>
 
       {/* Content Section */}
-      <section className="mx-auto max-w-7xl px-4 pb-20">
+      <section className="mx-auto max-w-7xl  px-4 pb-20">
         <ShowAllAudio allAudio={safeAudios} />
       </section>
     </div>
