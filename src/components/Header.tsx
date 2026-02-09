@@ -24,14 +24,13 @@ import {
 } from "@/components/ui/sheet";
 
 import { Button } from "@/components/ui/button";
-import { dashboard } from '../constants/routes';
+import { allmusic, dashboard } from '../constants/routes';
 
 import {
   aboutUsPath,
   addmusic,
   addPath,
   contentsPath,
-  reasonPath,
   SaveCouplePhotoPath,
   SaveMemoryPath,
 } from "@/constants/routes";
@@ -88,7 +87,7 @@ const Header = () => {
                     </DropdownMenuItem>
 
                     <DropdownMenuItem asChild>
-                      <Link href={SaveMemoryPath}>💌 Save Memory</Link>
+                      <Link href={allmusic}>💌 All Music</Link>
                     </DropdownMenuItem>
 
                     <DropdownMenuItem asChild>

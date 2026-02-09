@@ -1,7 +1,8 @@
+"use server"
+
 import { prisma } from "@/lib";
 import { AppError } from "../../../../middleware";
 import { supabaseServer } from "@/lib/supabase-server";
-import { threadId } from "worker_threads";
 import { revalidatePath } from "next/cache";
 import { allmusic } from "@/constants/routes";
 

@@ -60,7 +60,7 @@ const Audio = ({ title, url }: AudioResult) => {
       className="
         fixed bottom-0 
         z-50
-        w-80
+        w-70
         bg-gradient-to-r from-pink-100 via-pink-50 to-pink-100
         backdrop-blur-xl
         border-t border-pink-200
