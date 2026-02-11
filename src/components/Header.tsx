@@ -37,6 +37,7 @@ import {
   allmusic,
   dashboard,
   updateProfile,
+  blindbox,
 } from "@/constants/routes";
 
 
@@ -142,7 +143,7 @@ const Header = () => {
 
                 {/* MAIN LINKS */}
                 {[
-                  { label: "About Us", href: aboutUsPath },
+                  { label: "Blindbox", href: blindbox },
                   { label: "Change Profile", href: updateProfile  },
                   { label: "Dashboard", href: dashboard },
                 ].map((item) => (
