@@ -57,8 +57,8 @@ const page = async ({ searchParams }: PageProps) => {
   const results = await Promise.allSettled([
     GetSignUrl(`${profile.girlImage}`),
     GetSignUrl(`${profile.boyImage}`),
-    GetSignUrl("onlyProfile/kaungmalay.jpg"),
-    GetSignUrl("onlyProfile/kaungmalay2.jpg"),
+    GetSignUrl("onlyProfile/solo.jpg"),
+    GetSignUrl("onlyProfile/couple.jpg"),
   ]);
 
   const getSafeUrl = (result: PromiseSettledResult<SignedUrlResult | null>) => {

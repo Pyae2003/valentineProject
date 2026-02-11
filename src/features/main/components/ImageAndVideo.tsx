@@ -12,7 +12,9 @@ const ImageAndVideo = ({ soloUrl, coupleUrl }: ImageAndVideo) => {
     {
       id: 1,
       title: "Our Solo Photo Collections",
-      description: "Little moments matter.",
+      description: `It wasn’t just a meeting.
+      It felt like destiny whispering,
+      “You’ve finally found home.`,
       path: ourPhotosPath,
       image: soloUrl,
       alt: "Our Photo Collections",
@@ -51,7 +53,6 @@ const ImageAndVideo = ({ soloUrl, coupleUrl }: ImageAndVideo) => {
                 justify-center
               "
             >
-              {/* Card Padding - စာသားတွေ ဘောင်မထိအောင် padding ထည့်ထားသည် */}
               <div
                 className="p-6 h-full flex flex-col justify-between    rounded-3xl 
                 transition-all 
@@ -64,7 +65,6 @@ const ImageAndVideo = ({ soloUrl, coupleUrl }: ImageAndVideo) => {
                   description={item.description}
                   Footer={<FooterButton name="View All" path={item.path} />}
                 >
-                  {/* Image Container */}
                   <div className=" rounded-2xl w-full aspect-[4/3] relative mb-4 shadow-sm">
                     <Image
                       src={item.image}

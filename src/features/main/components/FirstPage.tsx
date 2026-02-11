@@ -11,11 +11,8 @@ import Link from "next/link";
 import { loginPath } from "@/constants/routes";
 import Footer from "@/components/Footer";
 
-type firstPageProp = {
-  frameUrl  : string
-}
 
-const FirstPage = ({frameUrl} : firstPageProp) => {
+const FirstPage = () => {
 
   return (
     <div className="w-full overflow-x-hidden">
@@ -64,7 +61,7 @@ const FirstPage = ({frameUrl} : firstPageProp) => {
             <Card className="w-full max-w-sm">
               <CardContent className="p-4">
                 <Image
-                  src={frameUrl}
+                  src="/firstpage.jpg"
                   width={400}
                   height={300}
                   unoptimized
