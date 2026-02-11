@@ -36,7 +36,9 @@ import {
   SaveCouplePhotoPath,
   allmusic,
   dashboard,
+  updateProfile,
 } from "@/constants/routes";
+import { logout } from "@/features/auth/actions";
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -59,14 +61,16 @@ const Header = () => {
             <NavigationMenuList>
 
               <NavigationMenuItem>
-                <NavigationMenuLink href={aboutUsPath}>
-                  About Us
+                <NavigationMenuLink onClick={()=>logout()}>
+                  <Button variant={"link"}>
+                    Logout
+                  </Button>
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
               <NavigationMenuItem>
-                <NavigationMenuLink href={contentsPath}>
-                  Content
+                <NavigationMenuLink href={updateProfile}>
+                  Change Profile
                 </NavigationMenuLink>
               </NavigationMenuItem>
 
@@ -140,7 +144,7 @@ const Header = () => {
                 {/* MAIN LINKS */}
                 {[
                   { label: "About Us", href: aboutUsPath },
-                  { label: "Content", href: contentsPath },
+                  { label: "Change Profile", href: updateProfile  },
                   { label: "Dashboard", href: dashboard },
                 ].map((item) => (
                   <Link

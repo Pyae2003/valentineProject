@@ -27,7 +27,7 @@ import { useAction } from "next-safe-action/hooks";
 import { LoaderCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { blindbox, dashboard } from "@/constants/routes";
+import { blindbox, setupProfile } from "@/constants/routes";
 import { login } from "../actions";
 
 export function Login() {
@@ -43,19 +43,20 @@ export function Login() {
       password: "",
     },
   });
-
   React.useEffect(() => {
     if (hasSucceeded) {
       toast.success(result.data?.message, { position: "top-center" });
-      router.push(localStorage.getItem("IsLog-in") ? dashboard : blindbox);
+      
       localStorage.setItem("IsLog-in", "true");
+  
+      router.push(blindbox); 
     }
-
+  
     if (hasErrored) {
       toast.error("Login Fail!", { position: "top-center" });
     }
   }, [hasSucceeded, hasErrored]);
-
+  
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     await execute(values);
   }

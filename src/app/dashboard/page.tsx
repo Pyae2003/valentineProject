@@ -1,8 +1,9 @@
 import { redirect } from 'next/navigation';
-import { loginPath } from '@/constants/routes';
+import { loginPath, setupProfile } from '@/constants/routes';
 import Dashboardd from '@/features/main/components/Dashboardd';
 import { getSession } from '@/Utils/get-sessions';
 import { GetSignUrl } from '@/lib/get-signUrl';
+import { prisma } from '@/lib';
 
 interface PageProps {
   searchParams: {
@@ -34,11 +35,28 @@ const page = async ({ searchParams }: PageProps) => {
   if (!session) {
     redirect(loginPath);
   };
+
+  const userId = session.user.id;
+
+  if(!userId){
+    redirect(loginPath);
+  };
+
+  const profile = await prisma.profile.findUnique({
+    where : {
+      userId : userId
+    }
+  });
+
+  if(!profile){
+    redirect(setupProfile);
+  };
+  console.log(profile)
   
   // ✅ SAFE SIGNED URL FETCH
   const results = await Promise.allSettled([
-    GetSignUrl("onlyProfile/chitthu.jpg"),
-    GetSignUrl("onlyProfile/IMG_0754.jpeg"),
+    GetSignUrl(`${profile.girlImage}`),
+    GetSignUrl(`${profile.boyImage}`),
     GetSignUrl("onlyProfile/kaungmalay.jpg"),
     GetSignUrl("onlyProfile/kaungmalay2.jpg"),
   ]);
@@ -50,8 +68,13 @@ const page = async ({ searchParams }: PageProps) => {
     return "/kaungmalay3.jpg";
   };
 
+
+
+
   const dashboardProp = {
     title,
+    boyName : profile.boyName,
+    girlName : profile.girlName,
     girlUrl: getSafeUrl(results[0]),
     boyUrl: getSafeUrl(results[1]),
     soloUrl: getSafeUrl(results[2]),

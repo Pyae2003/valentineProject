@@ -22,4 +22,7 @@ export const viewSaveCouplePath = (id : string) => `/dashboard/ourcouple-photos/
 export const ourSweetieMemoryPath = "/dashboard/oursweeties-memory"
 export const SaveMemoryPath = "/dashboard/oursweeties-memory/added"
 
+export const setupProfile = "/profile-setup"
+export const updateProfile = "/profile-update"
+
 export const dashboardQuery = (query : string) => `/dashboard?title=${encodeURIComponent(query)}`

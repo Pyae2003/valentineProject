@@ -1,7 +1,8 @@
 import BlindBox from '@/features/main/components/BlindBox'
-import React from 'react'
 
-const page = () => {
+
+const page =async () => {
+  
   return (
     <div>
       <BlindBox />

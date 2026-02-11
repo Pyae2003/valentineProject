@@ -9,6 +9,8 @@ import Footer from "@/components/Footer";
 
 type DashboardProps = {
   title: string;
+  boyName : string;
+  girlName : string;
   girlUrl: string;
   boyUrl: string;
   soloUrl: string;
@@ -17,6 +19,8 @@ type DashboardProps = {
 
 export default async function Dashboardd({
   title,
+  boyName,
+  girlName,
   girlUrl,
   boyUrl,
   soloUrl,
@@ -31,8 +35,8 @@ export default async function Dashboardd({
       </h1>
 
       <GlowingHeartConnection
-        leftName="Pyae Khant"
-        rightName="Thwe Zin Min Thant"
+        leftName={boyName}
+        rightName={girlName}
         boyUrl={boyUrl}
         girlUrl={girlUrl}
       />

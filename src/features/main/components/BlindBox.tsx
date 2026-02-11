@@ -1,11 +1,13 @@
 "use client";
 
+import { dashboard } from "@/constants/routes";
 import { FallingRain } from "@/features/others/components/FallingRain";
 import { FlowerExplosion } from "@/features/others/components/FlowerExplosion";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+
 
 
 export default function ValentinePage() {
@@ -15,8 +17,8 @@ export default function ValentinePage() {
   const goDashboard = () => {
     setExplode(true);
     setTimeout(() => {
-      router.push("/dashboard");
-    }, 1200);
+      router.push(dashboard);
+    }, 2000);
   };
 
   return (
