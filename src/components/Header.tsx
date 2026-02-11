@@ -27,18 +27,18 @@ import {
 } from "@/components/ui/sheet";
 
 import { Button } from "@/components/ui/button";
+import { logout } from '../features/auth/actions/logout';
 
 import {
   aboutUsPath,
   addmusic,
   addPath,
-  contentsPath,
   SaveCouplePhotoPath,
   allmusic,
   dashboard,
   updateProfile,
 } from "@/constants/routes";
-import { logout } from "@/features/auth/actions";
+
 
 const Header = () => {
   const [open, setOpen] = useState(false);
@@ -61,13 +61,12 @@ const Header = () => {
             <NavigationMenuList>
 
               <NavigationMenuItem>
-                <NavigationMenuLink onClick={()=>logout()}>
-                  <Button variant={"link"}>
-                    Logout
-                  </Button>
+                <NavigationMenuLink >
                 </NavigationMenuLink>
               </NavigationMenuItem>
-
+                  <Button variant={"link"}>
+                    logout
+                  </Button>
               <NavigationMenuItem>
                 <NavigationMenuLink href={updateProfile}>
                   Change Profile

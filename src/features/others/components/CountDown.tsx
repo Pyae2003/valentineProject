@@ -16,7 +16,7 @@ const CountDown = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       const { time, days, months, years, objectFormat } = timeCalculation(
-        "May 20,2024 23:59"
+        "January 10,2026 13:34"
       );
       setTimeDiff({ time, days, months, years, objectFormat });
     }, 1000);
