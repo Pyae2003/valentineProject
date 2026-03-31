@@ -25,4 +25,6 @@ export const SaveMemoryPath = "/dashboard/oursweeties-memory/added"
 export const setupProfile = "/profile-setup"
 export const updateProfile = "/profile-update"
 
-export const dashboardQuery = (query : string) => `/dashboard?title=${encodeURIComponent(query)}`
+export const editAnniDate  =  `/dashboard/change-date`
+export const AddAnniDate  =  `/dashboard/add-date`
+

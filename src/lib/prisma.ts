@@ -1,10 +1,45 @@
-import "dotenv/config";
-import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '../generated/prisma/client'
+import "server-only";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { PrismaClient } from "../generated/prisma/client";
 
-const connectionString = `${process.env.DATABASE_URL}`
+const connectionString = `${process.env.DATABASE_URL}`;
 
-const adapter = new PrismaPg({ connectionString })
-const prisma = new PrismaClient({ adapter })
+const adapter = new PrismaPg({ connectionString });
 
-export { prisma }
+const globalForPrisma = globalThis as unknown as {
+  prisma: PrismaClient | undefined;
+};
+
+// Connection pool configuration for production reliability
+// Add ?connection_limit=20&pool_timeout=30 to DATABASE_URL for pooling
+export const prisma =
+  globalForPrisma.prisma ??
+  new PrismaClient({
+    adapter,
+    log:
+      process.env.NODE_ENV === "development"
+        ? ["query", "error", "warn"]
+        : ["error"],
+    errorFormat: process.env.NODE_ENV === "development" ? "pretty" : "minimal",
+  });
+
+// Prevent multiple instances in development (hot reloading)
+if (process.env.NODE_ENV !== "production") {
+  globalForPrisma.prisma = prisma;
+}
+
+// Handle Prisma client events for monitoring
+prisma.$on("error" as never, (e: Error) => {
+  console.error("Prisma Client Error:", e);
+});
+
+// Export connection test function
+export const testDatabaseConnection = async (): Promise<boolean> => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    return true;
+  } catch (error) {
+    console.error("Database connection test failed:", error);
+    return false;
+  }
+};

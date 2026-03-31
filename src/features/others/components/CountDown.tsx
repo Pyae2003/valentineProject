@@ -2,23 +2,30 @@
 
 import { Separator } from "@/components/ui/separator";
 import { useEffect, useState } from "react";
-import { timeCalculation } from "../actions";
+import { Button } from "@/components/ui/button";
+import { OurDate } from "@/generated/prisma/client";
+import Link from "next/link";
+import { editAnniDate } from "@/constants/routes";
+import { timeCalculation } from "@/lib/timeCalculation";
 
-const CountDown = () => {
+const CountDown = ({days,months,year} : OurDate) => {
   const [timeDiff, setTimeDiff] = useState({
-    time: "0",
     days: "0",
     months: "0",
-    years: "0",
-    objectFormat: "0",
+    year: "0",
+    objectFormats: "0",
   });
 
   useEffect(() => {
     const interval = setInterval(() => {
-      const { time, days, months, years, objectFormat } = timeCalculation(
-        "January 10,2026 13:34:33"
+      const { realDays, realMonths, realYear, objectFormats } = timeCalculation(
+        `${year.toString()}-${months.toString()}-${days.toString()}`
       );
-      setTimeDiff({ time, days, months, years, objectFormat });
+
+      if( !realDays || !realMonths || !realYear ){
+        return;
+      }
+      setTimeDiff({  days : realDays, months : realMonths, year : realYear, objectFormats });
     }, 1000);
 
     return () => clearInterval(interval);
@@ -42,7 +49,7 @@ const CountDown = () => {
 
         <div className="flex justify-between text-pink-500 font-bold text-2xl sm:text-3xl mb-2">
           <div className="flex flex-col items-center">
-            {timeDiff.years}
+            {timeDiff.year}
             <span className="text-xs sm:text-sm font-normal text-pink-700">Years</span>
           </div>
 
@@ -61,13 +68,16 @@ const CountDown = () => {
           </div>
         </div>
 
-        <div>
-          <p className="text-xs sm:text-sm text-pink-500">{timeDiff.time}</p>
-        </div>
-
         <p className="mt-4 text-xs sm:text-sm text-pink-700">
-          Since <span className="font-medium">{timeDiff.objectFormat}</span>
+          Since <span className="font-medium">{timeDiff.objectFormats}</span>
         </p>
+        <div className="mt-4">
+        <Button className="bg-pink-700 hover:bg-pink-200" >
+          <Link href={editAnniDate}>
+            Edit Anni Date
+          </Link>
+        </Button>
+        </div>
       </div>
     </div>
   );

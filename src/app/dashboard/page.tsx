@@ -1,28 +1,25 @@
-import { redirect } from 'next/navigation';
-import { loginPath, setupProfile } from '@/constants/routes';
-import Dashboardd from '@/features/main/components/Dashboardd';
-import { getSession } from '@/Utils/get-sessions';
-import { GetSignUrl } from '@/lib/get-signUrl';
-import { prisma } from '@/lib';
+import { redirect } from "next/navigation";
+import { AddAnniDate, loginPath, setupProfile } from "@/constants/routes";
+import Dashboardd from "@/features/main/components/Dashboardd";
+import { getSession } from "@/Utils/get-sessions";
+import { GetSignUrl } from "@/lib/get-signUrl";
+import { prisma } from "@/lib";
 
 interface PageProps {
   searchParams: {
     title?: string;
-
   };
-};
+}
 
 interface SignedUrlResult {
   signUrl: string;
 }
 
-
 export const dynamic = "force-dynamic";
-
 
 const page = async ({ searchParams }: PageProps) => {
   const query = await searchParams;
-  const title = query.title ?? "Non";
+  const title = query.title ?? "NaN";
 
   let session = null;
 
@@ -34,31 +31,44 @@ const page = async ({ searchParams }: PageProps) => {
 
   if (!session) {
     redirect(loginPath);
-  };
+  }
 
   const userId = session.user.id;
 
-  if(!userId){
+  if (!userId) {
     redirect(loginPath);
-  };
+  }
 
   const profile = await prisma.profile.findUnique({
-    where : {
-      userId : userId
-    }
+    where: {
+      userId: userId,
+    },
   });
 
-  if(!profile){
+  if (!profile) {
     redirect(setupProfile);
+  }
+
+  const date = await prisma.ourDate.findUnique({
+    where: {
+      userId: userId,
+    },
+  });
+
+  if (!date) {
+    redirect(AddAnniDate);
   };
-  console.log(profile)
-  
+
+
+
+  // console.log(profile)
+
   // ✅ SAFE SIGNED URL FETCH
   const results = await Promise.allSettled([
     GetSignUrl(`${profile.girlImage}`),
     GetSignUrl(`${profile.boyImage}`),
     GetSignUrl("onlyProfile/solo.jpg"),
-    GetSignUrl("onlyProfile/couple.jpg"),
+    GetSignUrl("onlyProfile/couple2.jpg"),
   ]);
 
   const getSafeUrl = (result: PromiseSettledResult<SignedUrlResult | null>) => {
@@ -68,26 +78,17 @@ const page = async ({ searchParams }: PageProps) => {
     return "/kaungmalay3.jpg";
   };
 
-
-
-
   const dashboardProp = {
     title,
-    boyName : profile.boyName,
-    girlName : profile.girlName,
+    boyName: profile.boyName,
+    girlName: profile.girlName,
     girlUrl: getSafeUrl(results[0]),
     boyUrl: getSafeUrl(results[1]),
     soloUrl: getSafeUrl(results[2]),
     coupleUrl: getSafeUrl(results[3]),
   };
 
-  return (
-    <div>
-      {
-        !!session && <Dashboardd {...dashboardProp} />
-      }
-    </div>
-  )
-}
+  return <div>{!!session && <Dashboardd {...dashboardProp} />}</div>;
+};
 
 export default page;

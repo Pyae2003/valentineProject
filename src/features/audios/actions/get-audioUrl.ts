@@ -27,6 +27,9 @@ export const allAudio = async ({ title }: audioStateLogicProps) => {
       },
     });
 
+    if(audios.length == 0 ){
+      return null;
+    }
     const audiosWithUrl = await Promise.all(
       audios.map(async (audio) => {
         const { data, error } = await supabaseServer.storage

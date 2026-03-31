@@ -1,21 +1,28 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { dashboardQuery } from "@/constants/routes";
-import { useRouter } from "next/navigation";
+import { useDebouncedCallback } from "use-debounce";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 const InputSongSearch = () => {
-  const [query, setQuery] = useState<string>("");
+  const { replace } = useRouter();
+  const searchParams = useSearchParams();
+  const [query, setQuery] = useState<string>(
+    (searchParams.get("title") as string) ?? ""
+  );
+  const pathname = usePathname();
 
-  const router = useRouter();
+  const handleSubmit = useDebouncedCallback(() => {
+    const params = new URLSearchParams(searchParams);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (!query.trim()) return;
-
-    router.push(dashboardQuery(query));
-  };
+    if (!query.trim()) {
+      params.delete("title");
+    } else {
+      params.set("title", query);
+    }
+    replace(`${pathname}?${params}`);
+  }, 300);
 
   return (
     <div>
@@ -25,16 +32,17 @@ const InputSongSearch = () => {
       >
         <div className="flex items-center gap-3">
           <span className="text-pink-500">🎵</span>
-          <form onSubmit={handleSubmit}>
-            <Input
-              type="text"
-              value={query}
-              placeholder="Search our song..."
-              onChange={(e) => setQuery(e.target.value)}
-              className="flex-1 bg-transparent md:w-100 outline-none 
+          <Input
+            type="text"
+            value={query}
+            placeholder="Search our song..."
+            onChange={(e) => {
+              setQuery(e.target.value);
+              handleSubmit();
+            }}
+            className="flex-1 bg-transparent md:w-100 outline-none 
       placeholder:text-pink-300 text-sm"
-            />
-          </form>
+          />
         </div>
       </div>
     </div>

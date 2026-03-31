@@ -10,6 +10,7 @@ type SongListProps = {
 
 const SongList = ({ songs }: SongListProps) => {
   const [currentAudio, setCurrentAudio] = useState<AudioResult | null>(null);
+  console.log(songs)
   return (
     <div className="w-full px-4">
       <div className="mx-auto mt-3 max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
