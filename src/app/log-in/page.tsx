@@ -2,7 +2,7 @@ import { dashboard } from '@/constants/routes';
 import { Login } from '@/features/auth/components/Login'
 import { getSession } from '@/Utils/get-sessions'
 import { redirect } from 'next/navigation';
-
+export const dynamic = "force-dynamic";
 const page = async () => {
 
   const session = await getSession();
